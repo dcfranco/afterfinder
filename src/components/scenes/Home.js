@@ -7,6 +7,7 @@ export default class Home extends Component {
         return (
             <ScrollView>
                 <Event
+                    first
                     content={{
                         perfil: 'http://www.unicos.cc/wp-content/uploads/2016/11/rodrigo-perfil-380x285.jpg',
                         title: 'Backyard',

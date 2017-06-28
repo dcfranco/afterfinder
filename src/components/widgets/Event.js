@@ -18,7 +18,7 @@ export default class Event extends Component {
         let {content} = this.props;       
 
         return (
-            <View style={eventStyles.box}>
+            <View style={this.props.first == 1 ? eventStyles.boxFirst : eventStyles.box}>
                 <View style={eventStyles.boxHeader}>
                     <View>
                         <Image source={{uri: content.perfil}} style={eventStyles.boxImage} />
@@ -60,9 +60,14 @@ export default class Event extends Component {
 }
 
 const eventStyles = StyleSheet.create({
+    boxFirst: {
+        height: 227,
+        marginTop: 1,
+        backgroundColor: '#FFF'
+    },
     box: {
         height: 227,
-        marginTop: 15,
+        marginTop: 11,
         backgroundColor: '#FFF'
     },
     boxHeader: {

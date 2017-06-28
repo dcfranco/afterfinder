@@ -17,25 +17,25 @@ const Tabs = TabNavigator({
     Home: {
         screen: Home,
         navigationOptions: {
-            tabBarIcon: () => <Image source={homeImage} style={{ width: 20, height: 20 }} />,
+            tabBarIcon: ({tintColor}) => <Image source={homeImage} style={{ width: 20, height: 20, tintColor: tintColor }} />,
         },
     },
     Events: {
         screen: Events,
         navigationOptions: {
-            tabBarIcon: () => <Image source={eventsImage} style={{ width: 20, height: 20 }} />,
+            tabBarIcon: ({tintColor}) => <Image source={eventsImage} style={{ width: 20, height: 20, tintColor: tintColor }} />,
         },
     },
     New: {
         screen: New,
         navigationOptions: {
-            tabBarIcon: () => <Image source={newImage} style={{ width: 20, height: 20 }} />,
+            tabBarIcon: ({tintColor}) => <Image source={newImage} style={{ width: 20, height: 20,  tintColor: tintColor }} />,
         },
     },
     Social: {
         screen: Events,
         navigationOptions: {
-            tabBarIcon: () => <Image source={socialImage} style={{ width: 20, height: 20 }} />,
+            tabBarIcon: ({tintColor}) => <Image source={socialImage} style={{ width: 20, height: 20, tintColor: tintColor }} />,
         },
     },
 }, {
@@ -43,7 +43,9 @@ const Tabs = TabNavigator({
             showIcon: true,
             showLabel: false,
             style: { backgroundColor: "#FFF" },
-            tabStyle: { backgroundColor: "#FFF" }
+            tabStyle: { backgroundColor: "#FFF" },
+            activeTintColor: '#0F9BB9',
+            inactiveTintColor: '#888'
         }
     });
 
