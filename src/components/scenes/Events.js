@@ -4,7 +4,6 @@ import MapView from 'react-native-maps';
 import EventLine from '../widgets/EventLine'
 
 const mapStyle = require('../../map/style.json');
-
 const { width, height } = Dimensions.get('window');
 
 export default class Events extends Component {

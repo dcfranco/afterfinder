@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, Dimensions, TouchableHighlight } from 'react-native';
 import MapView from 'react-native-maps';
 
 const mapStyle = require('../../map/style.json');
@@ -15,8 +15,7 @@ export default class Event extends Component {
     }
 
     render() {
-        let {content} = this.props;       
-
+        let {content, navigation} = this.props;       
         return (
             <View style={this.props.first == 1 ? eventStyles.boxFirst : eventStyles.box}>
                 <View style={eventStyles.boxHeader}>
@@ -31,28 +30,30 @@ export default class Event extends Component {
                 </View>
                 <View style={eventStyles.boxMap}>
                     <Text style={eventStyles.boxMapText}>{content.stringDist}</Text>
-                    <MapView
-                        style={eventStyles.boxMap}
-                        customMapStyle={mapStyle}
-                        scrollEnabled={false}
-                        rotateEnabled={false}
-                        pitchEnabled={false}
-                        zoomEnabled={false}
-                        initialRegion={{
-                            latitude: content.lat,
-                            longitude: content.long,
-                            latitudeDelta: this.latitudeDelta,
-                            longitudeDelta: this.longitudeDelta,
-                        }}
-                    >
-                        <MapView.Marker
-                            coordinate={{
+                    <TouchableHighlight activeOpacity={1} underlayColor='transparent' onPress={() => navigation.navigate('Map', { event: content })}>
+                        <View><MapView
+                            style={eventStyles.boxMap}
+                            customMapStyle={mapStyle}
+                            scrollEnabled={false}
+                            rotateEnabled={false}
+                            pitchEnabled={false}
+                            zoomEnabled={false}
+                            initialRegion={{
                                 latitude: content.lat,
                                 longitude: content.long,
+                                latitudeDelta: this.latitudeDelta,
+                                longitudeDelta: this.longitudeDelta,
                             }}
-                            title={content.title}
-                        />
-                    </MapView>
+                        >
+                            <MapView.Marker
+                                coordinate={{
+                                    latitude: content.lat,
+                                    longitude: content.long,
+                                }}
+                                title={content.title}
+                            />
+                        </MapView></View>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
@@ -62,7 +63,6 @@ export default class Event extends Component {
 const eventStyles = StyleSheet.create({
     boxFirst: {
         height: 227,
-        marginTop: 1,
         backgroundColor: '#FFF'
     },
     box: {

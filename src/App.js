@@ -6,6 +6,7 @@ import Home from './components/scenes/Home';
 import Events from './components/scenes/Events';
 import New from './components/scenes/New';
 import Config from './components/scenes/Config';
+import Map from './components/scenes/Map';
 
 const homeImage = require('./imgs/home.png');
 const eventsImage = require('./imgs/events.png');
@@ -42,8 +43,8 @@ const Tabs = TabNavigator({
         tabBarOptions: {
             showIcon: true,
             showLabel: false,
-            style: { backgroundColor: "#FFF" },
-            tabStyle: { backgroundColor: "#FFF" },
+            style: { backgroundColor: '#FFF', borderBottomColor: '#CCC', borderBottomWidth: 0.5 },
+            tabStyle: { backgroundColor: '#FFF' },
             activeTintColor: '#0F9BB9',
             inactiveTintColor: '#888'
         }
@@ -79,6 +80,19 @@ const Main = StackNavigator({
             },
             headerTintColor: '#FFF'
         }
+    },
+    Map: {
+        screen: Map,
+        navigationOptions: ({ navigation }) => ({
+            title: `Localização ${navigation.state.params.event.title}`,
+            headerStyle: {
+                backgroundColor: '#0F9BB9',
+            },
+            headerTitleStyle: {
+                color: '#FFF'
+            },
+            headerTintColor: '#FFF'
+        })
     }
 });
 

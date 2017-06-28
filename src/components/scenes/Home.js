@@ -4,10 +4,12 @@ import Event from '../widgets/Event'
 
 export default class Home extends Component {
     render() {
+        const {navigation} = this.props;
         return (
             <ScrollView>
                 <Event
                     first
+                    navigation={navigation}
                     content={{
                         perfil: 'http://www.unicos.cc/wp-content/uploads/2016/11/rodrigo-perfil-380x285.jpg',
                         title: 'Backyard',
@@ -19,6 +21,7 @@ export default class Home extends Component {
                     }}
                 />
                 <Event
+                    navigation={navigation}
                     content={{
                         perfil: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/18527597_1369562576464008_5967151554248106611_n.jpg?_nc_ad=z-m&oh=35d53daa2e526ce26ccc009a4e4c027b&oe=59E2D6C8',
                         title: 'After do Warung',
@@ -30,6 +33,7 @@ export default class Home extends Component {
                     }}
                 />
                 <Event
+                    navigation={navigation}
                     content={{
                         perfil: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/18527597_1369562576464008_5967151554248106611_n.jpg?_nc_ad=z-m&oh=35d53daa2e526ce26ccc009a4e4c027b&oe=59E2D6C8',
                         title: 'After do Warung',
