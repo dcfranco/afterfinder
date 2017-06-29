@@ -7,7 +7,7 @@ import axios from 'axios';
 const mapStyle = require('../../map/style.json');
 const { width, height } = Dimensions.get('window');
 
-export default class Config extends Component {
+export default class SelectLocal extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -20,22 +20,24 @@ export default class Config extends Component {
         this.latitudeDelta = 0.0020;
         this.longitudeDelta = this.latitudeDelta * ratio;
         
-        this.defaultCoordinate = {};
+        this.defaultCoordinate = { lat: 0, lng: 0 };
         this.onChangeSearch = this.onChangeSearch.bind(this);
     }
 
-    dcomponentWillMount(){
-        navigator.geolocation.getCurrentPosition((pos) => {
-            let coordinate = pos.coords;
-            this.defaultCoordinate = {
-                lat: coordinate.latitude,
-                lng: coordinate.longitude
-            }
-        });
+    componentDidMount(){
+        const {localSelected} = this.props.navigation.state.params;
+        if(localSelected.rua) this.setState({locations: [{...localSelected}], selected: true});
+        else {
+            /*navigator.geolocation.getCurrentPosition(pos => {
+                let coordinate = pos.coords;
+                this.defaultCoordinate.lat = coordinate.latitude;
+                this.defaultCoordinate.lng = coordinate.longitude;                
+            });*/
+        }
     }
 
     onChangeSearch(text){
-        this.setState({search: text});
+        this.setState({search: text, selected: false});
 
         if(text.length > 3){
             axios.get(`https://maps.googleapis.com/maps/api/geocode/json?&address=${text}`).then((response) => {
@@ -61,11 +63,16 @@ export default class Config extends Component {
         }
     }
 
-    render() {        
+    onButtonSelect(){
+        const {onSelectLocal} = this.props.navigation.state.params;
+        onSelectLocal(this.state.locations[0])
+        this.props.navigation.goBack();
+    }
+
+    render() {
         const showLocal = this.state.locations[0] && this.state.locations[0].rua && this.state.locations[0].numero && 
                         this.state.locations[0].bairro && this.state.locations[0].cidade && this.state.locations[0].estado;
-
-        let coordinate = showLocal ? this.state.locations[0].coordinate : { lat: -26.934284, lng: -48.628141 }
+        let coordinate = showLocal ? this.state.locations[0].coordinate : this.defaultCoordinate;
 
         return (
             <View style={{flex: 1}}>
@@ -90,7 +97,7 @@ export default class Config extends Component {
                     :
                     <View style={formStyle.message}>
                         <Text style={formStyle.address1}>Pesquise o endereço acima</Text>
-                        <Text style={formStyle.address2}>Pressione aqui para confirmar o local</Text>                        
+                        <Text style={formStyle.address2}>Pressione aqui para selecionar o local</Text>                        
                     </View>}                    
                 </View>
                 <View style={formStyle.map}>
@@ -113,7 +120,7 @@ export default class Config extends Component {
                         </MapView>
                 </View>
                 <View style={formStyle.button}>
-                    <Button title='Selecionar local' color='#0F9BB9' onPress={() => console.log('selecionado')} />
+                    <Button title='Selecionar local do mapa' disabled={!this.state.selected} color='#0F9BB9' onPress={() => this.onButtonSelect()} />
                 </View>
             </View>
         );

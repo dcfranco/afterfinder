@@ -5,8 +5,8 @@ import { Text, View, Image, ScrollView, TouchableHighlight } from 'react-native'
 import Home from './components/scenes/Home';
 import Events from './components/scenes/Events';
 import New from './components/scenes/New';
-import Config from './components/scenes/Config';
 import Map from './components/scenes/Map';
+import SelectLocal from './components/scenes/SelectLocal';
 
 const homeImage = require('./imgs/home.png');
 const eventsImage = require('./imgs/events.png');
@@ -68,10 +68,10 @@ const Main = StackNavigator({
             )
         })
     },
-    Config: {
-        screen: Config,
+    SelectLocal: {
+        screen: SelectLocal,
         navigationOptions: {
-            title: 'Configurações',
+            title: 'Selecionar o local',
             headerStyle: {
                 backgroundColor: '#0F9BB9',
             },
