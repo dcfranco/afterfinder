@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements';
-import { Text, ScrollView, View, StyleSheet, TouchableHighlight } from 'react-native';
-
+import { Text, ScrollView, View, StyleSheet, TouchableHighlight, Dimensions, Button } from 'react-native';
+import MapView from 'react-native-maps';
 import axios from 'axios';
+
+const mapStyle = require('../../map/style.json');
+const { width, height } = Dimensions.get('window');
 
 export default class Config extends Component {
     constructor(props){
@@ -10,9 +13,25 @@ export default class Config extends Component {
         this.state = {
             search: '',
             selected: false,
-            locations: []
+            locations: [],
         }
+
+        const ratio = (width - 15) / 105;
+        this.latitudeDelta = 0.0020;
+        this.longitudeDelta = this.latitudeDelta * ratio;
+        
+        this.defaultCoordinate = {};
         this.onChangeSearch = this.onChangeSearch.bind(this);
+    }
+
+    dcomponentWillMount(){
+        navigator.geolocation.getCurrentPosition((pos) => {
+            let coordinate = pos.coords;
+            this.defaultCoordinate = {
+                lat: coordinate.latitude,
+                lng: coordinate.longitude
+            }
+        });
     }
 
     onChangeSearch(text){
@@ -42,15 +61,19 @@ export default class Config extends Component {
         }
     }
 
-    render() {
+    render() {        
         const showLocal = this.state.locations[0] && this.state.locations[0].rua && this.state.locations[0].numero && 
                         this.state.locations[0].bairro && this.state.locations[0].cidade && this.state.locations[0].estado;
+
+        let coordinate = showLocal ? this.state.locations[0].coordinate : { lat: -26.934284, lng: -48.628141 }
+
         return (
-            <ScrollView>
+            <View style={{flex: 1}}>
                 <View>
                     <View style={formStyle.form}>
                         <TextField icon='find-replace' onChange={this.onChangeSearch} value={this.state.search} firstUpCase={true}>Digite o endereço</TextField>
                     </View>
+
                     { showLocal ?
                     <TouchableHighlight activeOpacity={1} underlayColor='transparent' onPress={() => this.setState({selected: !this.state.selected})}>
                         <View style={formStyle.address}>
@@ -66,11 +89,33 @@ export default class Config extends Component {
                     </TouchableHighlight>
                     :
                     <View style={formStyle.message}>
-                        <Text style={formStyle.address1}>Pesquise seu endereço acima</Text>
-                        <Text style={formStyle.address2}>Pressione aqui quando encontrar o local</Text>                        
-                    </View>}
+                        <Text style={formStyle.address1}>Pesquise o endereço acima</Text>
+                        <Text style={formStyle.address2}>Pressione aqui para confirmar o local</Text>                        
+                    </View>}                    
                 </View>
-            </ScrollView>
+                <View style={formStyle.map}>
+                    <MapView
+                        style={{...StyleSheet.absoluteFillObject}}
+                        customMapStyle={mapStyle}
+                        region={{
+                            latitude: coordinate.lat,
+                            longitude: coordinate.lng,
+                            latitudeDelta: this.latitudeDelta,
+                            longitudeDelta: this.longitudeDelta
+                        }}>
+                        { this.state.selected &&
+                            <MapView.Marker
+                                coordinate={{
+                                    latitude: coordinate.lat,
+                                    longitude: coordinate.lng,
+                                }}
+                            />}
+                        </MapView>
+                </View>
+                <View style={formStyle.button}>
+                    <Button title='Selecionar local' color='#0F9BB9' onPress={() => console.log('selecionado')} />
+                </View>
+            </View>
         );
     }
 }
@@ -79,6 +124,11 @@ const formStyle = StyleSheet.create({
     form: {
         backgroundColor: '#FFF',
         margin: 10
+    },
+    map: {
+        margin: 10,
+        padding: 10,
+        flex: 1
     },
     left:{
         flex: 1,
@@ -114,5 +164,10 @@ const formStyle = StyleSheet.create({
     },
     iconPressed: {
         alignItems: 'flex-end'
+    },
+    button: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10
     }
 });
