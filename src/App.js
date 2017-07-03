@@ -7,6 +7,7 @@ import Events from './components/scenes/Events';
 import New from './components/scenes/New';
 import Map from './components/scenes/Map';
 import SelectLocal from './components/scenes/SelectLocal';
+import FacebookTest from './components/scenes/FacebookTest'
 
 const homeImage = require('./imgs/home.png');
 const eventsImage = require('./imgs/events.png');
@@ -62,7 +63,7 @@ const Main = StackNavigator({
                 color: '#FFF'
             },
             headerRight: (
-                <TouchableHighlight activeOpacity={1} underlayColor='transparent' onPress={() => navigation.navigate('Config')}>
+                <TouchableHighlight activeOpacity={1} underlayColor='transparent' onPress={() => navigation.navigate('FacebookTest')}>
                     <Image source={configImage} style={{ width: 25, height: 25, marginRight: 25 }} />
                 </TouchableHighlight>
             )
@@ -93,6 +94,19 @@ const Main = StackNavigator({
             },
             headerTintColor: '#FFF'
         })
+    },
+    FacebookTest: {
+        screen: FacebookTest,
+        navigationOptions: {
+            title: 'Selecionar o local',
+            headerStyle: {
+                backgroundColor: '#0F9BB9',
+            },
+            headerTitleStyle: {
+                color: '#FFF'
+            },
+            headerTintColor: '#FFF'
+        }
     }
 });
 
