@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
+import { View, TouchableHighlight, Text } from 'react-native';
+import { GraphRequestManager, GraphRequest, LoginManager } from 'react-native-fbsdk'
 
 export default class FacebookTest extends Component {
     componentWillMount(){
         const infoRequest = new GraphRequest(
-            '/me/friends',
+            '/me/events',
             null,
             this._responseInfoCallback,
         );
@@ -15,16 +15,24 @@ export default class FacebookTest extends Component {
 
     _responseInfoCallback(error, result) {
         if (error) {
-            alert('Error fetching data: ' + error.toString());
+            console.log(error);
         } else {
             console.log(result);
         }
     }
 
+    fbLogin(){
+        LoginManager.logInWithReadPermissions(['user_friends', 'user_events', 'email']).then(
+            (res) => console.log(res),
+            (err) => console.log(err)
+        );
+    }
     render() {
         return (
             <View>
-                
+                <TouchableHighlight activeOpacity={1} underlayColor='transparent' onPress={() => this.fbLogin()}>
+                    <Text>Login</Text>
+                </TouchableHighlight>
             </View>
         );
     }
